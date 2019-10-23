@@ -1,5 +1,6 @@
 require "sinatra"
 require "twilio-ruby"
+require "json"
 
 CODE = ENV.fetch("CODE")
 
@@ -7,6 +8,8 @@ use Rack::TwilioWebhookAuthentication, ENV.fetch("TWILIO_AUTH_TOKEN")
 
 post "/call" do
   puts "Incoming call"
+  puts "Params: #{params.inspect}"
+  puts JSON.pretty_generate(request.env)
   content_type "text/xml"
 
   Twilio::TwiML::VoiceResponse.new do |r|
