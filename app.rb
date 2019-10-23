@@ -1,4 +1,3 @@
-require "bundler/setup"
 require "sinatra"
 require "twilio-ruby"
 
@@ -15,7 +14,7 @@ post "/call" do
       g.say(message: "Enter code", voice: "alice")
     end
 
-    # If teher isn"t any input, loop
+    # If there isn't any input, loop
     r.redirect("/call")
   end
 end
