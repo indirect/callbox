@@ -2,6 +2,8 @@ require "bundler/setup"
 require "sinatra"
 require "twilio-ruby"
 
+CODE = ENV.fetch("CODE")
+
 use Rack::TwilioWebhookAuthentication, ENV.fetch("TWILIO_AUTH_TOKEN")
 
 post "/call" do
@@ -9,7 +11,7 @@ post "/call" do
   content_type "text/xml"
 
   Twilio::TwiML::VoiceResponse.new do |r|
-    r.gather(numDigits: 4, action: "/code") do |g|
+    r.gather(numDigits: CODE.size, action: "/code") do |g|
       g.say(message: "Enter code", voice: "alice")
     end
 
@@ -22,7 +24,7 @@ post "/code" do
   puts "Got code #{params["Digits"]}"
   content_type "text/xml"
 
-  if params["Digits"] == ENV["CODE"]
+  if params["Digits"] == CODE
     Twilio::TwiML::VoiceResponse.new do |r|
       r.play(digits: "3w3w3")
     end
