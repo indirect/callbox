@@ -19,7 +19,7 @@ post "/call" do
 
     # If there isn't any input, loop
     r.redirect("/call")
-  end
+  end.to_s
 end
 
 post "/code" do
@@ -29,12 +29,12 @@ post "/code" do
   if params["Digits"] == CODE
     Twilio::TwiML::VoiceResponse.new do |r|
       r.play(digits: "3w3w3")
-    end
+    end.to_s
   else
     Twilio::TwiML::VoiceResponse.new do |r|
       r.say(message: "Invalid code", voice: "alice")
       r.pause
       r.redirect("/call")
-    end
+    end.to_s
   end
 end
